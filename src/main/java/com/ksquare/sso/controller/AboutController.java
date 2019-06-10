@@ -17,6 +17,6 @@ public class AboutController {
      */
     @RequestMapping(value = "/about", method = RequestMethod.GET)
     public ResponseEntity<?> home() {
-    	return new ResponseEntity<>("This is the about page for crm-oauth2 application.", HttpStatus.OK);
+    	return new ResponseEntity<>("This is the about page for the SSO server.", HttpStatus.OK);
     }
 }

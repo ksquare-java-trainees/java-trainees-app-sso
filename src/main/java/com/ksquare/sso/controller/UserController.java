@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ksquare.sso.domain.User;
 import com.ksquare.sso.domain.UserRole;
-import com.ksquare.sso.security.CrmUserDetails;
+//import com.ksquare.sso.security.CrmUserDetails;
 import com.ksquare.sso.service.UserService;
 
 @RestController
@@ -54,7 +54,7 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/users", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<?> addUser(@RequestBody User user){
 		logger.info("Adding user " + user.getUsername());
@@ -76,6 +76,11 @@ public class UserController {
 	public ResponseEntity<?> deleteUser(@PathVariable String username){
 		userService.deleteUser(username);
 		logger.info("Deleted user " + username);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/auth", method = RequestMethod.GET)
+	public ResponseEntity<?> authUser(){
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
     
