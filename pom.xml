@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.stl.crm</groupId>
-  <artifactId>crm-oauth2-jwt</artifactId>
+  <artifactId>ksquare-sso</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
-  <name>crm-oauth2-jwt</name>
-  <description>Adding OAuth2 to crm project</description>
+  <name>ksquare-sso</name>
+  <description>SSO server with OAuth2 and JWT</description>
   
 
 	<properties>
@@ -120,6 +120,19 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Google Guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>20.0</version>
+		</dependency>
+		<!-- Log4j -->
+		<dependency>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>1.2.17</version>
 		</dependency>
 	</dependencies>
 

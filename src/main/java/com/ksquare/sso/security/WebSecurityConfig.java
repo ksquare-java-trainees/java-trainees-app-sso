@@ -25,10 +25,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-//	@Autowired
-//	private DataSource dataSource;
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private ClientDetailsService clientDetailsService;
@@ -52,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  	.anyRequest().authenticated()
 	  	.and()
 	  	.httpBasic()
-	  		.realmName("CRM_REALM");
+	  	.realmName("KSQUARE_REALM");
     }
 
     
@@ -68,14 +65,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-	//-- use the JdbcTokenStore to store tokens
-    /*
-	@Bean
-	public JdbcTokenStore tokenStore() {
-		return new JdbcTokenStore(dataSource);
-	}
-    */
     
 	//-- use the JwtTokenStore instead of JdbcTokenStore
 	@Bean

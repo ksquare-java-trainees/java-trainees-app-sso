@@ -16,7 +16,7 @@ import com.ksquare.sso.domain.Customer;
 import com.ksquare.sso.service.CustomerService;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/customers")
 public class CustomerController {
 	
 	@Autowired
@@ -29,7 +29,7 @@ public class CustomerController {
      * HTTP method: GET
      * 
      */	
-	@RequestMapping(value="/customers", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getCustomers() {
 
 		/**
@@ -52,7 +52,7 @@ public class CustomerController {
      * HTTP method: GET
      * 
      */		
-	@RequestMapping(value="/customers/{customerId}", method = RequestMethod.GET)
+	@RequestMapping(value="/{customerId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getCustomer(@PathVariable long customerId) {
 		Customer customer = customerService.getCustomer(customerId);
 		return new ResponseEntity<>(customer, HttpStatus.OK);
@@ -65,7 +65,7 @@ public class CustomerController {
      * HTTP method: POST
      * 
      */		
-	@RequestMapping(value="/customers", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> addCustomer(@RequestBody Customer customer) {
 		Customer newCustomer = customerService.addCustomer(customer);
 		return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
@@ -78,7 +78,7 @@ public class CustomerController {
      * HTTP method: PUT
      * 
      */	
-    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{customerId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateCustomer(@PathVariable long customerId, 
     										@RequestBody Customer customer) {
     	Customer updatedCustomer = customerService.updateCustomer(customerId, customer);
@@ -92,7 +92,7 @@ public class CustomerController {
      * HTTP method: DELETE
      * 
      */
-    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{customerId}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteCustomer(@PathVariable long customerId) {
     	Customer customer = customerService.getCustomer(customerId);

@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-	private static String REALM="CRM_REALM";
+	private static String REALM="KSQUARE_REALM";
 	
 	@Autowired
 	private DataSource dataSource;
@@ -41,29 +41,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
 		clients.jdbc(dataSource);
-		/*
-		clients.inMemory()
-	        .withClient("crmClient1")
-            .secret("crmSuperSecret")
-            .authorizedGrantTypes("password", "refresh_token")
-            .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-            .scopes("read", "write", "trust")
-            //.accessTokenValiditySeconds(ONE_DAY)
-            .accessTokenValiditySeconds(300)
-            .refreshTokenValiditySeconds(THIRTY_DAYS);
-		*/
 	}
-
-	/*
-	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.tokenStore(tokenStore).userApprovalHandler(userApprovalHandler)
-		.authenticationManager(authenticationManager)
-		.userDetailsService(crmUserDetailsService);
-	}
-	*/
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
