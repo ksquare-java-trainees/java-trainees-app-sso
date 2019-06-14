@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -42,7 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.csrf().disable()
 	  	.authorizeRequests()
-	  	.antMatchers("/about").permitAll()
 	  	.antMatchers("/oauth/token").permitAll()
 	  	.anyRequest().authenticated()
 	  	.and()
@@ -50,6 +50,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	  	.realmName("KSQUARE_REALM");
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs",
+                                   "/configuration/ui",
+                                   "/swagger-resources",
+                                   "/configuration/security",
+                                   "/swagger-ui.html",
+                                   "/webjars/**");
+    }
     
     @Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -67,18 +76,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	//-- use the JwtTokenStore instead of JdbcTokenStore
 	@Bean
 	public TokenStore tokenStore() {
-		//return new JdbcTokenStore(dataSource);
 		return new JwtTokenStore(jwtTokenEnhancer());
 	}
 	
 	@Bean
 	protected JwtAccessTokenConverter jwtTokenEnhancer() {
-		/*
-	    KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "mySecretKey".toCharArray());
-	    JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-	    converter.setKeyPair(keyStoreKeyFactory.getKeyPair("jwt"));
-	    */
-		//-- for the simple demo purpose, used the secret for signing.
 		//-- for production, it is recommended to use public/private key pair
 	    JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 	    converter.setSigningKey("Demo-Key-1");

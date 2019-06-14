@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService {
 	}
 	@PostConstruct
 	private void setupDefaultUser() {
-		//-- just to make sure there is an ADMIN user exist in the database for testing purpose
 		if (userRepository.count() == 0) {
 			userRepository.save(new User(
 					"crmadmin", 

@@ -18,7 +18,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.requestMatchers().antMatchers("/api/**")
 		.and().authorizeRequests()
 		.antMatchers("/api/**").access("hasRole('ADMIN') or hasRole('USER')")
-		.antMatchers("/islogged").access("hasRole('ADMIN') or hasRole('USER')")
 		.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}
 	

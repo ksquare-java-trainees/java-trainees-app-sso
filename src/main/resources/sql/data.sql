@@ -4,4 +4,8 @@ INSERT INTO oauth_client_details
    authorities, access_token_validity, refresh_token_validity)
 VALUES
    ('crmClient1', 'crmSuperSecret', 'read,write,trust', 'password,refresh_token', 
-   'ROLE_CLIENT,ROLE_TRUSTED_CLIENT', 900, 2592000);
+   'ROLE_CLIENT,ROLE_TRUSTED_CLIENT', 7776000, 2592000),
+   ('chatId', 'chatSecret', 'read,write,trust', 'password,refresh_token', 
+   'ROLE_CLIENT,ROLE_TRUSTED_CLIENT', 7776000, 2592000),
+   ('calendarId', 'calendarSecret', 'read,write,trust', 'password,refresh_token', 
+   'ROLE_CLIENT,ROLE_TRUSTED_CLIENT', 7776000, 2592000);
