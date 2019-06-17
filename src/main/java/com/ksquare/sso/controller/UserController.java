@@ -164,7 +164,7 @@ public class UserController {
 	 * @param userNames
 	 * @return
 	 */
-	@RequestMapping(value = "/areUsers", method = RequestMethod.GET,
+	@RequestMapping(value = "/areUsers", method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"})
 	@ApiOperation(value = "areUsers",
@@ -172,17 +172,9 @@ public class UserController {
 			+ " are not real users",
     response = String.class,
     responseContainer = "List")
-	public ResponseEntity<?> areUsers(@RequestBody List<String> userNames) {
-		List<User> users = userService.getUsers();
-		for (User user : users) {
-			loop: for(int i = 0; i<userNames.size(); i++) {
-				if (user.getUsername().equals(userNames.get(i))) {
-					userNames.remove(userNames.get(i));
-					break loop;
-				}
-			} 
-		}
-		return new ResponseEntity<>(userNames, HttpStatus.OK);
+	public ResponseEntity<?> areUsers(@RequestBody List<String> usernames) {
+		List<String> invalidUsers = userService.areUsers(usernames);
+		return new ResponseEntity<>(invalidUsers, HttpStatus.OK);
 	}
 
 }

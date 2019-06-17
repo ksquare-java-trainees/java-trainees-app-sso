@@ -11,4 +11,5 @@ public interface UserService {
 	User addUser(User user);
 	void deleteUser(String username);
 	User updateUser(String username, User user);
+	List<String> areUsers(List<String> usernames);
 }

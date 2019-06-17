@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ksquare.sso.domain.OauthClientDetails;
 import com.ksquare.sso.service.OauthClientDetailsService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/client-api")
 public class OauthClientDetailsController {
@@ -29,8 +31,12 @@ public class OauthClientDetailsController {
 	 * Returns the list of all API clients registered on the server.
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "getAllClientAPI",
+			notes = "Returns the list of all API clients registered on the server",
+			response = OauthClientDetails.class,
+			responseContainer = "List")
 	public ResponseEntity<?> getAllClientAPI(){
 		List<OauthClientDetails> clients = oauthClientDetailsService.getAPIclients();
 		logger.info("Listing all API clients");
@@ -42,8 +48,11 @@ public class OauthClientDetailsController {
 	 * @param clientid
 	 * @return
 	 */
-	@RequestMapping(value = "/{clientid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{clientid}", method = RequestMethod.GET, produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "getClientAPI",
+			notes = "Returns the API client information of the client with the id provided",
+			response = OauthClientDetails.class)
 	public ResponseEntity<?> getClientAPI(@PathVariable String clientid){
 		OauthClientDetails client = oauthClientDetailsService.getAPIclient(clientid);
 		logger.info("Returning API client of " + clientid);
@@ -56,8 +65,11 @@ public class OauthClientDetailsController {
 	 * @param client
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "addClientAPI",
+    		notes = "Adds a new API client with the API client information provided. Returns an HTTP CREATED status code",
+    		response = OauthClientDetails.class)
 	public ResponseEntity<?> addClientAPI(@RequestBody OauthClientDetails client){
 		logger.info("Adding APLI client " + client.getId());
 		OauthClientDetails newClient = oauthClientDetailsService.addAPIclient(client);
@@ -71,6 +83,8 @@ public class OauthClientDetailsController {
 	 */
 	@RequestMapping(value = "/{clientid}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "deleteAPIclient",
+    		notes = "Deletes the API client with the client id provided and returns an HTTP OK status code.")
 	public ResponseEntity<?> deleteClientAPI(@PathVariable String clientid){
 		oauthClientDetailsService.deleteAPIclient(clientid);
 		logger.info("Delete API client " + clientid);
