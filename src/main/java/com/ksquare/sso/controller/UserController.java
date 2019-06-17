@@ -38,39 +38,54 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	
+	/**
+	 * Returns all registered users and an HTTP OK status code
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET,
             produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "getUsers",
-	notes = "Gets the info of all the users. Returns a list with all the users info",
-    response = User.class,
-    responseContainer = "List")
+			notes = "Gets the info of all the users. Returns a list with all the users info",
+		    response = User.class,
+		    responseContainer = "List")
 	public ResponseEntity<?> getUsers() {
 		List<User> users = userService.getUsers();
 		logger.info("Listing all users");
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
-
+	
+	/**
+	 * Returns the complete user information of the user name provided along with an HTTP OK status code. 
+	 * @param username
+	 * @return
+	 */
 	@RequestMapping(value = "/{username}", method = RequestMethod.GET,
             produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "getUser",
-	notes = "Gets the info of a user. Receives the user name in the path and returns the correspondent info",
-    response = User.class)
+			notes = "Gets the info of a user. Receives the user name in the path and returns the correspondent info",
+		    response = User.class)
 	public ResponseEntity<?> getUser(@PathVariable String username) {
 		User user = userService.getUser(username);
-		logger.info("Returning client info of " + username);
+		logger.info("Returning user info of " + username);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-
+	
+	/**
+	 * Registers a new user to the server with USER role.
+	 * Returns the newly created user and an HTTP CREATED status code.
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST,
             produces = {"application/json"},
             consumes = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "addUser",
-	notes = "Creates a new user. Receives a User object with the user info in the request body",
-    response = User.class)
+			notes = "Creates a new user. Receives a User object with the user info in the request body",
+		    response = User.class)
 	public ResponseEntity<?> addUser(@RequestBody User user) {
 		logger.info("Adding user " + user.getUsername());
 		user.setRoles(Arrays.asList(new UserRole("USER")));
@@ -78,56 +93,82 @@ public class UserController {
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 	
+	/**
+	 * Registers a new user to the server with ADMIN and USER role.
+	 * Returns the newly created user and an HTTP CREATED status code.
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "/admin", method = RequestMethod.POST,
             produces = {"application/json"},
             consumes = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "addAdminUser",
-	notes = "Creates a new user with admin privileges. Receives a User object with the user info in the request body",
-    response = User.class)
+			notes = "Creates a new user with admin privileges. Receives a User object with the user info in the request body",
+		    response = User.class)
 	public ResponseEntity<?> addAdminUser(@RequestBody User user) {
 		logger.info("Adding user " + user.getUsername());
 		user.setRoles(Arrays.asList(new UserRole("ADMIN"), new UserRole("USER")));
 		User newUser = userService.addUser(user);
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
-
+	
+	/**
+	 * Updates the user information of the user name provided
+	 * @param username
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "/{username}", method = RequestMethod.PUT,
             produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "updateUser",
-	notes = "Updates a user info. Receives the username in the path and a User object with the updated user info in the request body")
+			notes = "Updates a user info. Receives the username in the path and a User object with the updated user info in the request body")
 	public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User user) {
 		logger.info("Updated user info of " + username);
 		userService.updateUser(username, user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	
+	/**
+	 * Deletes the user with the user name provided and an HTTP OK status code.
+	 * @param username
+	 * @return
+	 */
 	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE,
             produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "deleteUser",
-	notes = "Deletes a user. Receives the name of the user to delete")
+			notes = "Deletes a user. Receives the name of the user to delete")
 	public ResponseEntity<?> deleteUser(@PathVariable String username) {
 		userService.deleteUser(username);
 		logger.info("Deleted user " + username);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	
+	/**
+	 * Returns an HTTP OK status code if the token provided is still valid.
+	 * @return HTTP status code
+	 */
 	@RequestMapping(value = "/auth", method = RequestMethod.GET,
             produces = {"application/json"})
 	@ApiOperation(value = "authUser",
-	notes = "Validate if a user is registered",
+			notes = "Validate if a user is registered",
     response = HttpStatus.class)
 	public ResponseEntity<?> authUser() {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	
+	/**
+	 * Receives a list of usernames and returns back the list of not valid users.
+	 * @param userNames
+	 * @return
+	 */
 	@RequestMapping(value = "/areUsers", method = RequestMethod.GET,
             consumes = {"application/json"},
             produces = {"application/json"})
 	@ApiOperation(value = "areUsers",
-	notes = "Determines if a bunch of people are real users. Receives a String list with the names of posible users and retrieves a String list with the names that"
+			notes = "Determines if a bunch of people are real users. Receives a String list with the names of posible users and retrieves a String list with the names that"
 			+ " are not real users",
     response = String.class,
     responseContainer = "List")
