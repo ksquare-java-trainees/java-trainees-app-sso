@@ -39,33 +39,38 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET,
+            produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "getUsers",
+	notes = "Gets the info of all the users. Returns a list with all the users info",
+    response = User.class,
+    responseContainer = "List")
 	public ResponseEntity<?> getUsers() {
-
-		/**
-		 * Obtaining information about the current user
-		 */
-		// Authentication authentication =
-		// SecurityContextHolder.getContext().getAuthentication();
-		// CrmUserDetails principal = (CrmUserDetails) authentication.getPrincipal();
-		// logger.info("Logged in user name: " + principal.getUsername());
-
 		List<User> users = userService.getUsers();
 		logger.info("Listing all users");
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{username}", method = RequestMethod.GET,
+            produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "getUser",
+	notes = "Gets the info of a user. Receives the user name in the path and returns the correspondent info",
+    response = User.class)
 	public ResponseEntity<?> getUser(@PathVariable String username) {
 		User user = userService.getUser(username);
 		logger.info("Returning client info of " + username);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST,
+            produces = {"application/json"},
+            consumes = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "addUser",
+	notes = "Creates a new user. Receives a User object with the user info in the request body",
+    response = User.class)
 	public ResponseEntity<?> addUser(@RequestBody User user) {
 		logger.info("Adding user " + user.getUsername());
 		user.setRoles(Arrays.asList(new UserRole("USER")));
@@ -73,8 +78,13 @@ public class UserController {
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/admin", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin", method = RequestMethod.POST,
+            produces = {"application/json"},
+            consumes = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "addAdminUser",
+	notes = "Creates a new user with admin privileges. Receives a User object with the user info in the request body",
+    response = User.class)
 	public ResponseEntity<?> addAdminUser(@RequestBody User user) {
 		logger.info("Adding user " + user.getUsername());
 		user.setRoles(Arrays.asList(new UserRole("ADMIN"), new UserRole("USER")));
@@ -82,32 +92,43 @@ public class UserController {
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{username}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{username}", method = RequestMethod.PUT,
+            produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "updateUser",
+	notes = "Updates a user info. Receives the username in the path and a User object with the updated user info in the request body")
 	public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User user) {
 		logger.info("Updated user info of " + username);
 		userService.updateUser(username, user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE,
+            produces = {"application/json"})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@ApiOperation(value = "deleteUser",
+	notes = "Deletes a user. Receives the name of the user to delete")
 	public ResponseEntity<?> deleteUser(@PathVariable String username) {
 		userService.deleteUser(username);
 		logger.info("Deleted user " + username);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/auth", method = RequestMethod.GET)
-	@ApiOperation(value = "Validate if a user is registered",
-    notes = "The specified id is used to retrieve and return the diary entry",
+	@RequestMapping(value = "/auth", method = RequestMethod.GET,
+            produces = {"application/json"})
+	@ApiOperation(value = "authUser",
+	notes = "Validate if a user is registered",
     response = HttpStatus.class)
 	public ResponseEntity<?> authUser() {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/areUsers", method = RequestMethod.GET)
-	@ApiOperation(value = "Retrieves a String list with names of unregistered users",
+	@RequestMapping(value = "/areUsers", method = RequestMethod.GET,
+            consumes = {"application/json"},
+            produces = {"application/json"})
+	@ApiOperation(value = "areUsers",
+	notes = "Determines if a bunch of people are real users. Receives a String list with the names of posible users and retrieves a String list with the names that"
+			+ " are not real users",
     response = String.class,
     responseContainer = "List")
 	public ResponseEntity<?> areUsers(@RequestBody List<String> userNames) {

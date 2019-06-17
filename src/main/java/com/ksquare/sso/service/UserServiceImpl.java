@@ -53,7 +53,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(String username, User user) {
-		return userRepository.save(user);
+		User userToUpdate = userRepository.findByUsername(username);
+		userToUpdate.setUsername(user.getUsername());
+		userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+		return userRepository.save(userToUpdate);
 	}
 	@PostConstruct
 	private void setupDefaultUser() {

@@ -17,20 +17,38 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-
+	
 	@Bean
     public Docket api(){
         return new Docket(DocumentationType.SWAGGER_2)
+        	.groupName("Users Endpoints")
             .select()
-            .apis(RequestHandlerSelectors.any()) 
+            .apis(RequestHandlerSelectors.basePackage("com.ksquare.sso.controller")) 
             .paths(PathSelectors.any()) 
             .build()
             .apiInfo(apiInfo());
     }
+	
+	@Bean
+	public Docket api2() {
+		return new Docket(DocumentationType.SWAGGER_2)
+		    .groupName("Token Endpoint")
+		    .select()
+            .apis(RequestHandlerSelectors.any()) 
+		    .paths(PathSelectors.ant("/oauth/token"))
+		    .build()
+		    .apiInfo(apiInfo());
+	}
 
 	private ApiInfo apiInfo() {
-		ApiInfo apiInfo = new ApiInfo("Single Sign On REST API", "Users manager REST API", "v0.1", "API TOS",
-				"rafap, thomvald", "API License", "API License URL");
+		ApiInfo apiInfo = new ApiInfo(
+				"Single Sign On REST API", 
+				"Users manager REST API", 
+				"v0.1", 
+				"API TOS",
+				"rafap, thomvald", 
+				"API License", 
+				"API License URL");
 		return apiInfo;
 	}
 }
