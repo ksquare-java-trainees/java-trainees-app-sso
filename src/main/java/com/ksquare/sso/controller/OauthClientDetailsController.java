@@ -2,7 +2,8 @@ package com.ksquare.sso.controller;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/client-api")
 public class OauthClientDetailsController {
 	
-	private static Logger logger = Logger.getLogger(OauthClientDetailsController.class);
+	private static Logger logger = LoggerFactory.getLogger(OauthClientDetailsController.class);
 	
 	@Autowired
 	private OauthClientDetailsService oauthClientDetailsService;

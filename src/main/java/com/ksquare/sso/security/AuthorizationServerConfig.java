@@ -49,9 +49,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.tokenStore(tokenStore).tokenEnhancer(jwtTokenEnhancer).userApprovalHandler(userApprovalHandler)
-		.authenticationManager(authenticationManager)
-		.userDetailsService(crmUserDetailsService);
+		endpoints
+			.tokenStore(tokenStore)
+			.tokenEnhancer(jwtTokenEnhancer)
+			.userApprovalHandler(userApprovalHandler)
+			.authenticationManager(authenticationManager)
+			.userDetailsService(crmUserDetailsService);
 	}
 	
 
