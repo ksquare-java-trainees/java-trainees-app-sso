@@ -6,10 +6,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ksquare.sso.domain.User;
 import com.ksquare.sso.domain.UserRole;
-//import com.ksquare.sso.security.CrmUserDetails;
 import com.ksquare.sso.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -44,7 +42,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET,
-            produces = {"application/json"})
+            produces = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "getUsers",
 			notes = "Gets the info of all the users. Returns a list with all the users info",
@@ -62,7 +60,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{username}", method = RequestMethod.GET,
-            produces = {"application/json"})
+            produces = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "getUser",
 			notes = "Gets the info of a user. Receives the user name in the path and returns the correspondent info",
@@ -80,8 +78,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST,
-            produces = {"application/json"},
-            consumes = {"application/json"})
+            produces = {MediaType.APPLICATION_JSON_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "addUser",
 			notes = "Creates a new user. Receives a User object with the user info in the request body",
@@ -100,8 +98,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/admin", method = RequestMethod.POST,
-            produces = {"application/json"},
-            consumes = {"application/json"})
+            produces = {MediaType.APPLICATION_JSON_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "addAdminUser",
 			notes = "Creates a new user with admin privileges. Receives a User object with the user info in the request body",
@@ -120,7 +118,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{username}", method = RequestMethod.PUT,
-            produces = {"application/json"})
+            produces = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "updateUser",
 			notes = "Updates a user info. Receives the username in the path and a User object with the updated user info in the request body")
@@ -136,7 +134,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE,
-            produces = {"application/json"})
+            produces = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "deleteUser",
 			notes = "Deletes a user. Receives the name of the user to delete")
@@ -151,7 +149,7 @@ public class UserController {
 	 * @return HTTP status code
 	 */
 	@RequestMapping(value = "/auth", method = RequestMethod.GET,
-            produces = {"application/json"})
+            produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value = "authUser",
 			notes = "Validate if a user is registered",
     response = HttpStatus.class)
@@ -165,8 +163,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/areUsers", method = RequestMethod.POST,
-            consumes = {"application/json"},
-            produces = {"application/json"})
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value = "areUsers",
 			notes = "Determines if a bunch of people are real users. Receives a String list with the names of posible users and retrieves a String list with the names that"
 			+ " are not real users",

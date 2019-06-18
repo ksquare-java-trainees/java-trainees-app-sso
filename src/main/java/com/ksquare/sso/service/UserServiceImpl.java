@@ -56,19 +56,17 @@ public class UserServiceImpl implements UserService {
 		User userToUpdate = userRepository.findByUsername(username);
 		userToUpdate.setUsername(user.getUsername());
 		userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+		userToUpdate.setRoles(user.getRoles());
 		return userRepository.save(userToUpdate);
 	}
 	
 	@Override
 	public List<String> areUsers(List<String> usernames){
 		List<User> existingUsers = Lists.newArrayList(userRepository.findAll());
-		for (String username : usernames) {
-			loop: for(User existingUser : existingUsers) {
-				if (username.equals(existingUser.getUsername())) {
-					usernames.remove(existingUser.getUsername());
-					break loop;
-				}
-			} 
+		for (User user : existingUsers) {
+			if(usernames.contains(user.getUsername())) {
+				usernames.remove(user.getUsername());
+			}
 		}
 		return usernames;
 	}

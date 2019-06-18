@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class OauthClientDetailsController {
 	 * Returns the list of all API clients registered on the server.
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "getAllClientAPI",
 			notes = "Returns the list of all API clients registered on the server",
@@ -48,7 +49,7 @@ public class OauthClientDetailsController {
 	 * @param clientid
 	 * @return
 	 */
-	@RequestMapping(value = "/{clientid}", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(value = "/{clientid}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "getClientAPI",
 			notes = "Returns the API client information of the client with the id provided",
@@ -65,7 +66,7 @@ public class OauthClientDetailsController {
 	 * @param client
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@ApiOperation(value = "addClientAPI",
     		notes = "Adds a new API client with the API client information provided. Returns an HTTP CREATED status code",
