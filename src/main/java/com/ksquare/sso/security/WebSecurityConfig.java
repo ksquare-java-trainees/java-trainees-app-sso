@@ -1,7 +1,10 @@
 package com.ksquare.sso.security;
 
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -28,6 +31,12 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	@Value("${security.signing-key}")
+    private String signingKey;
+
+    @Value("${security.security-realm}")
+    private String securityRealm;
+
 	@Autowired
 	private ClientDetailsService clientDetailsService;
 
@@ -47,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	  	.anyRequest().authenticated()
 	  	.and()
 	  	.httpBasic()
-	  	.realmName("KSQUARE_REALM");
+	  	.realmName(securityRealm);
     }
 
     @Override
@@ -83,7 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected JwtAccessTokenConverter jwtTokenEnhancer() {
 		//-- for production, it is recommended to use public/private key pair
 	    JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-	    converter.setSigningKey("Demo-Key-1");
+	    converter.setSigningKey(signingKey);
 	    
 	    return converter;
 	}	
