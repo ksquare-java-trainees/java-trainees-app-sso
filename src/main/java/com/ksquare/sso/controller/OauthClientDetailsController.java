@@ -78,6 +78,24 @@ public class OauthClientDetailsController {
 		return new ResponseEntity<>(newClient, HttpStatus.CREATED);
 	}
 	
+	
+	/**
+     * Updates the API client info of the client with the clientid provided
+     * @param clientid
+     * @param client
+     * @return
+     */
+    @RequestMapping(value = "/{clientid}", method = RequestMethod.PUT,
+           produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @ApiOperation(value = "updateUser",
+            notes = "Updates an API client info. Receives the clientid in the path and a Client object with the updated user info in the request body")
+    public ResponseEntity<?> updateClientAPI(@PathVariable String clientid, @RequestBody OauthClientDetails client){
+        logger.info("Updating API client " + client.getId());
+        oauthClientDetailsService.updateAPIclient(clientid, client);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
 	/**
 	 * Deletes the API client with the client id provided and returns an HTTP OK status code.
 	 * @param clientid
